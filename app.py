@@ -3,7 +3,7 @@ import folium
 from geopy.geocoders import ArcGIS
 import pandas as pd
 
-#file_path = 'votingLocs.csv'
+file_path = 'votingLocs.csv'
 df = votingLocs
 
 # Initialize map
