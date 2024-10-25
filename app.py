@@ -2,11 +2,9 @@ import streamlit as st
 import folium
 from geopy.geocoders import ArcGIS
 import pandas as pd
-from streamlit_folium import st_folium
 
-# Load data
-file_path = 'Desktop/Voting_Destinations/votingLocs.csv'
-df = pd.read_csv("votingLocs.csv")
+file_path = 'Desktop/votingLocs.csv'
+df = pd.read_csv(file_path)
 
 # Initialize map
 m = folium.Map(location=[38.82667174903602, -77.12094362224809], zoom_start=11.2)
@@ -46,10 +44,10 @@ def add_address_marker(address, map_obj):
 
 # Add circle markers from data
 for index, row in df.iterrows():
-    latitude = row['Latitude']  # Use the column name for latitude
-    longitude = row['Longitude']  # Use the column name for longitude
-    column1_value = row['Name']  # Assuming there's a column named 'Name'
-    column2_value = row['Address']  # Assuming there's a column named 'Description'
+    latitude = row[3]
+    longitude = row[4]
+    column1_value = row[0]
+    column2_value = row[1]
 
     popup_content = f'''
     <div style="width: 200px;">
@@ -72,7 +70,7 @@ for index, row in df.iterrows():
 st.title("Interactive Map with Address Input")
 
 # Sidebar input for address
-address = st.sidebar.text_input("Enter an address", "Your Address")
+address = st.sidebar.text_input("Enter an address", "6116 Franklin Park Road, McLean")
 
 # Update the map with the address marker
 if address:
@@ -80,4 +78,3 @@ if address:
 
 # Display the map using streamlit_folium
 st_folium(m, width=725, height=500)
-
