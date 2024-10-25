@@ -5,8 +5,8 @@ import pandas as pd
 from streamlit_folium import st_folium
 
 # Load data
-#file_path = 'Desktop/Voting_Destinations/votingLocs.csv'
-df = pd.read_csv("votingLocs.csv")
+file_path = 'Desktop/Voting_Destinations/votingLocs.csv'
+df = pd.read_csv("file_path")
 
 # Initialize map
 m = folium.Map(location=[38.82667174903602, -77.12094362224809], zoom_start=11.2)
