@@ -4,46 +4,53 @@ from geopy.geocoders import ArcGIS
 import pandas as pd
 from streamlit_folium import st_folium
 
-# Sample dataset for markers
-df = pd.DataFrame({
-    'Name': ['Location1', 'Location2'],
-    'Description': ['Description1', 'Description2'],
-    'Latitude': [38.826671, 38.927000],
-    'Longitude': [-77.120943, -77.020943]
-})
+# Load data
+#file_path = 'Desktop/Voting_Destinations/votingLocs.csv'
+df = pd.read_csv("votingLocs.csv")
 
-# Streamlit app title
-st.title("Interactive Map with Address Input")
+# Initialize map
+m = folium.Map(location=[38.82667174903602, -77.12094362224809], zoom_start=11.2)
 
-# Function to add a marker for an address entered by the user
+last_red_marker = None
+
+# Function to add address marker
 def add_address_marker(address, map_obj):
+    global last_red_marker
     geolocator = ArcGIS()
+
     try:
         location = geolocator.geocode(address, timeout=10)
+
         if location:
             latitude = location.latitude
             longitude = location.longitude
+
+            # Popup message for the marker
             popup = folium.Popup(f"<div style='width: 75px;'><strong>{'Your Location'}</strong></div>", max_width=250)
-            folium.Marker(
+
+            if last_red_marker:
+                map_obj.remove_child(last_red_marker)
+
+            # Add red marker for input location
+            last_red_marker = folium.Marker(
                 location=[latitude, longitude],
-                icon=folium.Icon(icon='star'),
+                icon=folium.Icon(icon='star', color='red'),
                 popup=popup
-            ).add_to(map_obj)
+            )
+            map_obj.add_child(last_red_marker)
+
         else:
             st.error(f"Address not found: {address}")
     except Exception as e:
         st.error(f"Geocoding error: {e}")
 
-# Creating a base map
-m = folium.Map(location=[38.826671, -77.120943], zoom_start=11.2)
-
-# Add the markers for each row in the dataframe
+# Add circle markers from data
 for index, row in df.iterrows():
-    latitude = row['Latitude']
-    longitude = row['Longitude']
-    column1_value = row['Name']
-    column2_value = row['Description']
-    
+    latitude = row[3]  # Use the column name for latitude
+    longitude = row[4]  # Use the column name for longitude
+    column1_value = row[0]  # Assuming there's a column named 'Name'
+    column2_value = row[1]  # Assuming there's a column named 'Description'
+
     popup_content = f'''
     <div style="width: 200px;">
     <strong>{column1_value}</strong><br>
@@ -61,12 +68,16 @@ for index, row in df.iterrows():
         popup=popup_content
     ).add_to(m)
 
-# Form to input address
-st.sidebar.header("Enter Address")
-address = st.sidebar.text_input("Address")
+# Streamlit app UI
+st.title("Interactive Map with Address Input")
 
+# Sidebar input for address
+address = st.sidebar.text_input("Enter an address", "Your Address")
+
+# Update the map with the address marker
 if address:
     add_address_marker(address, m)
 
-# Display the map
-st_folium(m, width=700, height=500)
+# Display the map using streamlit_folium
+st_folium(m, width=725, height=500)
+
