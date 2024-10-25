@@ -5,8 +5,8 @@ import pandas as pd
 from streamlit_folium import st_folium
 
 # Load data
-file_path = 'Desktop/votingLocs.csv'
-df = pd.read_csv("file_path")
+file_path = 'Desktop/Voting_Destinations/votingLocs.csv'
+df = pd.read_csv("votingLocs.csv")
 
 # Initialize map
 m = folium.Map(location=[38.82667174903602, -77.12094362224809], zoom_start=11.2)
@@ -46,10 +46,10 @@ def add_address_marker(address, map_obj):
 
 # Add circle markers from data
 for index, row in df.iterrows():
-    latitude = row[3]  # Use the column name for latitude
-    longitude = row[4]  # Use the column name for longitude
-    column1_value = row[0]  # Assuming there's a column named 'Name'
-    column2_value = row[1]  # Assuming there's a column named 'Description'
+    latitude = row['Latitude']  # Use the column name for latitude
+    longitude = row['Longitude']  # Use the column name for longitude
+    column1_value = row['Name']  # Assuming there's a column named 'Name'
+    column2_value = row['Address']  # Assuming there's a column named 'Description'
 
     popup_content = f'''
     <div style="width: 200px;">
