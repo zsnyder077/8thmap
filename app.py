@@ -4,7 +4,7 @@ from geopy.geocoders import ArcGIS
 import pandas as pd
 
 file_path = 'votingLocs.csv'
-df = pd.read_csv(file_path)
+df = pd.read_csv('votingLocs.csv')
 
 # Initialize map
 m = folium.Map(location=[38.82667174903602, -77.12094362224809], zoom_start=11.2)
