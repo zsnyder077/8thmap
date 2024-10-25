@@ -1,0 +1,2 @@
+file_path = 'Desktop/Voting_Destinations/votingLocs.csv'
+df = pd.read_csv("votingLocs.csv")
