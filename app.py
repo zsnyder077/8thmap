@@ -3,8 +3,8 @@ import folium
 from geopy.geocoders import ArcGIS
 import pandas as pd
 
-file_path = 'votingLocs.csv'
-df = pd.read_csv('votingLocs.csv')
+#file_path = 'votingLocs.csv'
+df = votingLocs
 
 # Initialize map
 m = folium.Map(location=[38.82667174903602, -77.12094362224809], zoom_start=11.2)
